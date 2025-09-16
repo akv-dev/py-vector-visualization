@@ -26,5 +26,5 @@ def fetch_articles():
     conn.close()
     # Convert the vector strings back to numpy arrays
     # The vector from pgvector looks like '[1,2,3,...]', so we slice and split
-    df['title_vector'] = df['title_vector'].apply(lambda x: [float(val) for val in x.strip('[]').split(',')])
+    df['title_vector'] = df['title_vector'].apply(lambda x: tuple(float(val) for val in x.strip('[]').split(',')))
     return df
