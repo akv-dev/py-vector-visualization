@@ -1,14 +1,13 @@
-
 import streamlit as st
 import os
 import warnings
-
-# Suppress the specific FutureWarning from umap-learn using a deprecated sklearn parameter
-warnings.filterwarnings("ignore", category=FutureWarning, message=".*'force_all_finite' was renamed to 'ensure_all_finite'.*")
 import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from umap import UMAP
+
+# Suppress the specific FutureWarning from umap-learn using a deprecated sklearn parameter
+warnings.filterwarnings("ignore", category=FutureWarning, message=".*'force_all_finite' was renamed to 'ensure_all_finite'.*")
 
 from database import fetch_articles
 from visualization import create_plot, find_neighbors
@@ -16,8 +15,8 @@ from visualization import create_plot, find_neighbors
 st.set_page_config(layout="wide")
 st.title("Vector Search Visualization")
 
-# Define the model name as a constant
-MODEL_NAME = 'Supabase/gte-large-en-1.5'
+# Use the correct, public model name
+MODEL_NAME = 'Alibaba-NLP/gte-large-en-v1.5'
 DATA_LIMIT = 5000
 
 @st.cache_data
@@ -52,9 +51,8 @@ if st.button("Search"):
             if df_2d is None:
                 st.error("Could not load data from the database. Please ensure the database is running and populated.")
             else:
-                # 1. Encode the query using the correct model, passing the auth token if available
-                token = os.getenv("TOKEN")
-                model = SentenceTransformer(MODEL_NAME, token=token)
+                # 1. Encode the query using the correct public model
+                model = SentenceTransformer(MODEL_NAME)
                 query_vector = model.encode(query)
 
                 # 2. Find nearest neighbors
