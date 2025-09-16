@@ -67,11 +67,19 @@ else
 fi
 
 # --- 4. Setup Environment and Install Dependencies ---
-if [ ! -d ".venv" ]; then
-    echo "Virtual environment not found. Creating one with 'uv venv' using Python 3.11..."
+CORRECT_PYTHON_VERSION="3.11"
+VENV_PYTHON=".venv/bin/python"
+
+# Check if venv exists and if it has the correct python version
+if [ -d ".venv" ] && $VENV_PYTHON --version 2>&1 | grep -q "Python $CORRECT_PYTHON_VERSION"; then
+    echo "Correct virtual environment (.venv with Python $CORRECT_PYTHON_VERSION) already exists."
+else
+    echo "Virtual environment is missing or has the wrong Python version."
+    echo "Removing old environment (if it exists) and creating a new one with Python $CORRECT_PYTHON_VERSION..."
+    rm -rf .venv
     # Requesting Python 3.11 to ensure compatibility with scientific computing packages.
     # uv will download it if not available.
-    uv venv --python 3.11
+    uv venv --python $CORRECT_PYTHON_VERSION
 fi
 
 echo "Installing Python dependencies with uv..."
