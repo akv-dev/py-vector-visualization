@@ -33,7 +33,7 @@ fi
 # Export variables from .env file for the container
 export $(grep -v '^#' .env | xargs)
 
-DB_CONTAINER_NAME="vector-db"
+DB_CONTAINER_NAME="postgres"
 
 # Check if the container is already running
 if ! $CONTAINER_CMD ps --filter "name=^/${DB_CONTAINER_NAME}$" --format '{{.Names}}' | grep -q "${DB_CONTAINER_NAME}"; then
@@ -49,7 +49,7 @@ if ! $CONTAINER_CMD ps --filter "name=^/${DB_CONTAINER_NAME}$" --format '{{.Name
             -e "POSTGRES_DB=${DB_NAME}" \
             -e "POSTGRES_USER=${DB_USER}" \
             -e "POSTGRES_PASSWORD=${DB_PASSWORD}" \
-            ankane/pgvector:latest
+            pgvector/pgvector:pg17-trixie
     fi
     echo "Waiting for the database to initialize (10 seconds)..."
     sleep 10
