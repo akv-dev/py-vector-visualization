@@ -8,3 +8,4 @@ numba==0.59.1
 scikit-learn
 plotly
 python-dotenv
+SQLAlchemy

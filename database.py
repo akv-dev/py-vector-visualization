@@ -1,30 +1,29 @@
-
 import os
 import pandas as pd
-import psycopg2
+from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 
 load_dotenv()
 
-def get_db_connection():
-    """Establishes a connection to the PostgreSQL database."""
-    conn = psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
+def get_db_engine():
+    """Establishes a connection engine to the PostgreSQL database using SQLAlchemy."""
+    db_uri = (
+        f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
+        f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
     )
-    return conn
+    engine = create_engine(db_uri)
+    return engine
 
-def fetch_articles():
-    """Fetches articles and their title vectors from the database."""
-    conn = get_db_connection()
-    query = "SELECT title, title_vector FROM articles;"
-    # Use pandas to directly read the SQL query into a DataFrame
-    df = pd.read_sql_query(query, conn)
-    conn.close()
+def fetch_articles(limit=5000):
+    """Fetches a random sample of articles and their title vectors from the database."""
+    engine = get_db_engine()
+    # Use ORDER BY RANDOM() to get a different sample each time, which is good for visualization.
+    # For a production app with stable plots, you might use a seeded random or another sampling method.
+    query = text(f"SELECT title, title_vector FROM articles ORDER BY RANDOM() LIMIT {limit}")
+    
+    with engine.connect() as connection:
+        df = pd.read_sql_query(query, connection)
+
     # Convert the vector strings back to numpy arrays
-    # The vector from pgvector looks like '[1,2,3,...]', so we slice and split
     df['title_vector'] = df['title_vector'].apply(lambda x: tuple(float(val) for val in x.strip('[]').split(',')))
     return df
