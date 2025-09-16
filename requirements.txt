@@ -1,0 +1,9 @@
+streamlit
+psycopg2-binary
+pandas
+numpy
+sentence-transformers
+umap-learn
+scikit-learn
+plotly
+python-dotenv
