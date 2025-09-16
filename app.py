@@ -1,5 +1,9 @@
 
 import streamlit as st
+import warnings
+
+# Suppress the specific FutureWarning from umap-learn using a deprecated sklearn parameter
+warnings.filterwarnings("ignore", category=FutureWarning, message=".*'force_all_finite' was renamed to 'ensure_all_finite'.*")
 import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
