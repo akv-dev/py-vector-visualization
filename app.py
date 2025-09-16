@@ -1,5 +1,6 @@
 
 import streamlit as st
+import os
 import warnings
 
 # Suppress the specific FutureWarning from umap-learn using a deprecated sklearn parameter
@@ -51,8 +52,9 @@ if st.button("Search"):
             if df_2d is None:
                 st.error("Could not load data from the database. Please ensure the database is running and populated.")
             else:
-                # 1. Encode the query using the correct model
-                model = SentenceTransformer(MODEL_NAME)
+                # 1. Encode the query using the correct model, passing the auth token if available
+                token = os.getenv("TOKEN")
+                model = SentenceTransformer(MODEL_NAME, token=token)
                 query_vector = model.encode(query)
 
                 # 2. Find nearest neighbors
