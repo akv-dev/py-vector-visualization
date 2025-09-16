@@ -3,7 +3,7 @@ psycopg2-binary
 pandas
 numpy
 sentence-transformers
-umap-learn
+umap-learn>=0.5.6
 scikit-learn
 plotly
 python-dotenv

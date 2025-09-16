@@ -66,10 +66,15 @@ else
     echo "'uv' is already installed."
 fi
 
-# --- 4. Install Dependencies ---
+# --- 4. Setup Environment and Install Dependencies ---
+if [ ! -d ".venv" ]; then
+    echo "Virtual environment not found. Creating one with 'uv venv'..."
+    uv venv
+fi
+
 echo "Installing Python dependencies with uv..."
 uv pip install -r requirements.txt
 
 # --- 5. Run the Project ---
-echo "Starting the Streamlit application with uv..."
-uv streamlit run app.py
+echo "Starting the Streamlit application with 'uv run'..."
+uv run streamlit run app.py
