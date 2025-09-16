@@ -87,6 +87,5 @@ uv pip install -r requirements.txt
 
 # --- 5. Run the Project ---
 echo "Starting the Streamlit application with 'uv run'..."
-# Set the Numba threading layer to 'tbb' to avoid threading errors
-export NUMBA_THREADING_LAYER=tbb
+
 uv run streamlit run app.py
