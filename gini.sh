@@ -68,8 +68,10 @@ fi
 
 # --- 4. Setup Environment and Install Dependencies ---
 if [ ! -d ".venv" ]; then
-    echo "Virtual environment not found. Creating one with 'uv venv'..."
-    uv venv
+    echo "Virtual environment not found. Creating one with 'uv venv' using Python 3.11..."
+    # Requesting Python 3.11 to ensure compatibility with scientific computing packages.
+    # uv will download it if not available.
+    uv venv --python 3.11
 fi
 
 echo "Installing Python dependencies with uv..."
