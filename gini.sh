@@ -17,8 +17,17 @@ echo "Using '$CONTAINER_CMD' as the container engine."
 # --- 2. Load Environment and Start Database ---
 echo "Loading database configuration..."
 if [ ! -f .env ]; then
-    echo "Error: .env file not found. Please copy .env.example to .env and fill in your database details."
-    exit 1
+    echo ".env file not found. Creating one with default credentials."
+    cat > .env << EOL
+DB_NAME=postgres
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
+EOL
+    echo "Default .env file created. You can edit this file to change the database configuration."
+else
+    echo "Using existing .env file."
 fi
 
 # Export variables from .env file for the container
