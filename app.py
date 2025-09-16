@@ -52,7 +52,7 @@ if st.button("Search"):
                 st.error("Could not load data from the database. Please ensure the database is running and populated.")
             else:
                 # 1. Encode the query using the correct public model
-                model = SentenceTransformer(MODEL_NAME)
+                model = SentenceTransformer(MODEL_NAME, trust_remote_code=True)
                 query_vector = model.encode(query)
 
                 # 2. Find nearest neighbors
